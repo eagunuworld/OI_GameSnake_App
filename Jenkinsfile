@@ -72,18 +72,17 @@ pipeline{
          parallel(
                "stop-delete-svc": {
                 sh 'docker ps -f name=demo-gamesnake -q | xargs --no-run-if-empty docker container stop'
-                sh 'docker container ls -a -fname=demo-gamesnake  -q | xargs -r docker container rm'
-                sh 'docker container ls '
+                //sh 'docker container ls -a -fname=demo-gamesnake  -q | xargs -r docker container rm'
+                //sh 'docker container ls '
                   },
-                  "Dependency Check": {
+                  "Displaycontent": {
                   sh 'cat docker-compose.yml'    //OWASP Dependency check plugin is required via jenkins
-                  },
-                 "RemoveImage": {
-                 sh 'docker rmi  $(docker images -q)'
-               }
-             )
-         }
+                   }
+                )
+              }
+          }
 
+        
   // stage('Remove All Images Before Deployment') {
   //       steps{
   //           sshagent(['ec2-user-password-credentials']) {
