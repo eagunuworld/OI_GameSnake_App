@@ -72,8 +72,8 @@ pipeline{
          parallel(
                "stop-delete-svc": {
                 sh 'docker ps -f name=demo-gamesnake -q | xargs --no-run-if-empty docker container stop'
-                //sh 'docker container ls -a -fname=demo-gamesnake  -q | xargs -r docker container rm'
-                //sh 'docker container ls '
+                sh 'docker container ls -a -fname=demo-gamesnake  -q | xargs -r docker container rm'
+                sh 'docker container ls '
                   },
                   "Displaycontent": {
                   sh 'cat docker-compose.yml'    //OWASP Dependency check plugin is required via jenkins
