@@ -111,6 +111,7 @@ pipeline{
               sh 'docker rmi  $(docker images -q)'
                   }
                }
+          }
 
  //  stage('Remove ps from Agent Server') {
  //        steps {
