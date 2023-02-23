@@ -23,6 +23,12 @@ spec:
         image: eagunuworld/demo-gamesnake:BUILD_TAG
         ports:
         - containerPort: 3000
+        volumeMounts:
+        - mountPath: ./:/app
+          name: cache-volume
+      volumes:
+      - name: cache-volume
+        emptyDir:
       #  securityContext:
         #  runAsNonRoot: true
         #  runAsUser: 100
