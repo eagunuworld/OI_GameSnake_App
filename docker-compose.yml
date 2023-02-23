@@ -2,6 +2,7 @@ version: '3.3'
 services:
   snake:
     image: 'eagunuworld/demo-gamesnake:BUILD_TAG'
+    container_name: demo-gamesnake
     environment:
       - "PORT:3000"
     ports:

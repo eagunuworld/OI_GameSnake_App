@@ -94,13 +94,23 @@ pipeline{
  //         }
  //      }
  //
-  stage('Remove images from Agent Server') {
-        steps{
-            script {
-                sh 'docker rmi  $(docker images -q)'
+
+ stage('Stop And Remove Running Container') {
+      steps{
+          sshagent(['ec2-user-password-credentials']) {
+               sh 'docker ps -f name=demo-gamesnake -q | xargs --no-run-if-empty docker container stop'
+               sh 'docker container ls -a -fname=demo-gamesnake  -q | xargs -r docker container rm'
+               sh 'docker container ls '
                   }
-              }
-            }
+                }
+             }
+
+  stage('Remove All Images Before Deployment') {
+        steps{
+            sshagent(['ec2-user-password-credentials']) {
+              sh 'docker rmi  $(docker images -q)'
+                  }
+               }
 
  //  stage('Remove ps from Agent Server') {
  //        steps {
