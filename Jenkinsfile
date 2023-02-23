@@ -56,14 +56,14 @@ pipeline{
           	script{
           				    sh '''final_tag=$(echo $VERSION | tr -d ' ')
           				     echo ${final_tag}test
-          				     sed -i "s/BUILD_TAG/$final_tag/g"  prod-deployment.yaml
+          				     sed -i "s/BUILD_TAG/$final_tag/g"  docker-compose.yml
           				     '''
           				  }
           			 }
           		}
   stage('Display docker-compose content ') {
         steps {
-            sh 'cat prod-deployment.yaml'
+            sh 'cat docker-compose.yml'
             }
         }
  
@@ -112,7 +112,7 @@ pipeline{
 
  stage('prod-deployment') {
          steps {
-            sh 'kubectl apply -f prod-deployment.yaml'
+            sh 'docker-compose up -d'
          }
        }
 
