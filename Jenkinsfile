@@ -61,57 +61,36 @@ pipeline{
           				  }
           			 }
           		}
-  stage('Display docker-compose content ') {
-        steps {
-            sh 'cat docker-compose.yml'
-            }
-        }
+  // stage('Display docker-compose content ') {
+  //       steps {
+  //           sh 'cat docker-compose.yml'
+  //           }
+  //       }
  
- //  stage('Stop And Remove Running Container') {
- //      steps{
- //          sshagent(['ec2-user-password-credentials']) {
- //               sh 'docker ps -f name=springboot -q | xargs --no-run-if-empty docker container stop'
- //               sh 'docker container ls -a -fname=springboot  -q | xargs -r docker container rm'
- //               sh 'docker container ls '
- //                  }
- //                }
- //             }
- //
- //  stage('Remove All Images Before Deployment') {
- //        steps{
- //            sshagent(['ec2-user-password-credentials']) {
- //              sh 'docker rmi  $(docker images -q)'
- //                  }
- //               }
- //             }
- //
- // stage('Deploy On Prod') {
- //     steps{
- //       sshagent(['ec2-user-password-credentials']) {
- //            sh "scp -o StrictHostKeyChecking=no docker-compose.yml ec2-user@18.219.210.241:"
- //            sh "ssh -o StrictHostKeyChecking=no ec2-user@18.219.210.241 docker-compose up -d"
- //           }
- //         }
- //      }
- //
-
- stage('Stop And Remove Running Container') {
-      steps{
-          sshagent(['ec2-user-password-credentials']) {
-               sh 'docker ps -f name=demo-gamesnake -q | xargs --no-run-if-empty docker container stop'
-               sh 'docker container ls -a -fname=demo-gamesnake  -q | xargs -r docker container rm'
-               sh 'docker container ls '
-                  }
-                }
-             }
-
-  stage('Remove All Images Before Deployment') {
-        steps{
-            sshagent(['ec2-user-password-credentials']) {
-              sh 'docker rmi  $(docker images -q)'
-                  }
+ stage('Mutation Tests - PIT') {       //(Pit mutation) is a plugin in jenkis and plugin was added in pom.xml line 68
+      steps {
+         parallel(
+               "stop-delete-svc": {
+                sh 'docker ps -f name=demo-gamesnake -q | xargs --no-run-if-empty docker container stop'
+                sh 'docker container ls -a -fname=demo-gamesnake  -q | xargs -r docker container rm'
+                sh 'docker container ls '
+                  },
+                  "Dependency Check": {
+                  sh 'cat docker-compose.yml'    //OWASP Dependency check plugin is required via jenkins
+                  },
+                 "RemoveImage": {
+                 sh 'docker rmi  $(docker images -q)'
                }
-          }
+             )
+         }
+
+  // stage('Remove All Images Before Deployment') {
+  //       steps{
+  //           sshagent(['ec2-user-password-credentials']) {
+  //             sh 'docker rmi  $(docker images -q)'
+  //                 }
+  //              }
+  //         }
 
  //  stage('Remove ps from Agent Server') {
  //        steps {
