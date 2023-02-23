@@ -25,7 +25,7 @@ pipeline{
     stages {
       stage('checking.. out codes ') {
           steps {
-                git branch: 'walmart-prod', credentialsId: '	eagunuworld_dockerhub_creds', url: 'https://github.com/eagunuworld/OI_GameSnake_App.git'
+                git branch: 'walmart-prod-mss', credentialsId: '	eagunuworld_dockerhub_creds', url: 'https://github.com/eagunuworld/OI_GameSnake_App.git'
                  //git (credentialsId: 'democalculus_github_creds_ID', url: 'https://github.com/democalculus/springboot-dockerimage',branch: 'walmart-dev-mss')
                    }
                 }
